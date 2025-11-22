@@ -25,8 +25,8 @@ public class Reseña {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @Column(name = "Api_pro")
-    private String prodApi;
+    @Column(name = "producto_api_id")
+    private String productoApiId;
 
     private String comentario;
 

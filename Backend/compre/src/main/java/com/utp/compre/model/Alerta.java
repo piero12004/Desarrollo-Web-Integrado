@@ -1,11 +1,8 @@
 package com.utp.compre.model;
 
-import javax.swing.text.StyledEditorKit.BoldAction;
-
-import org.hibernate.annotations.DialectOverride.GeneratedColumn;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -19,18 +16,18 @@ import lombok.Data;
 public class Alerta {
     
     @Id
-    @GeneratedColumn(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @Column(name = "prodApi_ id")
-    private String prodApi_id;
+    @Column(name = "producto_api_id")
+    private String productoApiId;
 
-    @Column(name = "precio_obj")
-    private Double precioObj;
+    @Column(name = "precio_objetivo")
+    private Double precioObjetivo;
 
     private Boolean activo = true;
 }
