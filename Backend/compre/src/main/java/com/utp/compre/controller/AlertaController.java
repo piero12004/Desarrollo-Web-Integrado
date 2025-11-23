@@ -3,18 +3,24 @@ package com.utp.compre.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.utp.compre.model.Alerta;
 import com.utp.compre.model.Usuario;
 import com.utp.compre.repository.AlertaRepository;
 import com.utp.compre.repository.UsuarioRepository;
 
+@RestController
+@RequestMapping("/api/alerta")
+@CrossOrigin("*")
 public class AlertaController {
     @Autowired
     private AlertaRepository alertaRepo;

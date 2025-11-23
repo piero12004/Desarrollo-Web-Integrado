@@ -13,5 +13,5 @@ public interface AlertaRepository extends JpaRepository<Alerta,Integer>{
     
     List<Alerta> findByUsuarioAndActivo(Usuario usuario, Boolean activo);
 
-    List<Alerta> findbyProductoApiId(String productoApiId);
+    List<Alerta> findByProductoApiId(String productoApiId);
 }
