@@ -12,33 +12,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.utp.compre.model.Reseña;
+import com.utp.compre.model.Resena;
 import com.utp.compre.model.Usuario;
-import com.utp.compre.repository.ReseñaRepository;
+import com.utp.compre.repository.ResenaRepository;
 import com.utp.compre.repository.UsuarioRepository;
 
 @RestController
 @RequestMapping("/api/resena")
 @CrossOrigin("*")
-public class ReseñaController {
+public class ResenaController {
     @Autowired
-    private ReseñaRepository reseñaRepo;
+    private ResenaRepository reseñaRepo;
 
     @Autowired
     private UsuarioRepository usuarioRepo;
 
     @PostMapping("/crear")
-    public Reseña crear(@RequestBody Reseña reseña) {
+    public Resena crear(@RequestBody Resena reseña) {
         return reseñaRepo.save(reseña);
     }
 
     @GetMapping("/producto/{productoApiId}")
-    public List<Reseña> obtenerPorProducto(@PathVariable String productoApiId) {
+    public List<Resena> obtenerPorProducto(@PathVariable String productoApiId) {
         return reseñaRepo.findByProductoApiId(productoApiId);
     }
 
     @GetMapping("/usuario/{usuarioId}")
-    public List<Reseña> obtenerPorUsuario(@PathVariable Integer usuarioId) {
+    public List<Resena> obtenerPorUsuario(@PathVariable Integer usuarioId) {
         Usuario user = usuarioRepo.findById(usuarioId).orElse(null);
         return reseñaRepo.findByUsuario(user);
     }
