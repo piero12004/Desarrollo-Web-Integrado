@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -21,12 +22,15 @@ public class Alerta {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
+    @NotNull(message = "Usuario es obligatorio")
     private Usuario usuario;
 
     @Column(name = "producto_api_id")
+    @NotNull(message = "ProductoApiId es obligatorio")
     private String productoApiId;
 
     @Column(name = "precio_objetivo")
+    @NotNull(message = "Precio objetivo es obligatorio")
     private Double precioObjetivo;
 
     private Boolean activo = true;

@@ -1,8 +1,11 @@
 package com.utp.compre.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +20,8 @@ import com.utp.compre.model.Usuario;
 import com.utp.compre.repository.ResenaRepository;
 import com.utp.compre.repository.UsuarioRepository;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/resena")
 @CrossOrigin("*")
@@ -28,8 +33,15 @@ public class ResenaController {
     private UsuarioRepository usuarioRepo;
 
     @PostMapping("/crear")
-    public Resena crear(@RequestBody Resena reseña) {
-        return reseñaRepo.save(reseña);
+    public ResponseEntity<?> crear(@Valid @RequestBody Resena resena, BindingResult result) {
+        if (result.hasErrors()) {
+            List<String> errores = result.getAllErrors()
+                                        .stream()
+                                        .map(e -> e.getDefaultMessage())
+                                        .collect(Collectors.toList());
+            return ResponseEntity.badRequest().body(errores);
+        }
+        return ResponseEntity.ok(reseñaRepo.save(resena));
     }
 
     @GetMapping("/producto/{productoApiId}")

@@ -1,8 +1,11 @@
 package com.utp.compre.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +21,8 @@ import com.utp.compre.model.Usuario;
 import com.utp.compre.repository.AlertaRepository;
 import com.utp.compre.repository.UsuarioRepository;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/alerta")
 @CrossOrigin("*")
@@ -29,8 +34,15 @@ public class AlertaController {
     private UsuarioRepository usuarioRepo;
 
     @PostMapping("/crear")
-    public Alerta crear(@RequestBody Alerta alerta) {
-        return alertaRepo.save(alerta);
+    public ResponseEntity<?> crear(@Valid @RequestBody Alerta alerta, BindingResult result) {
+        if (result.hasErrors()) {
+            List<String> errores = result.getAllErrors()
+                                        .stream()
+                                        .map(e -> e.getDefaultMessage())
+                                        .collect(Collectors.toList());
+            return ResponseEntity.badRequest().body(errores);
+        }
+        return ResponseEntity.ok(alertaRepo.save(alerta));
     }
 
     @GetMapping("/usuario/{usuarioId}")
