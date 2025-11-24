@@ -9,5 +9,5 @@ public class ProductSearchResult {
     private String price;
     private String source;
     private String thumbnail;
-
+    private String productoApiId;
 }
