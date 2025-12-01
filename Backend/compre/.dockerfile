@@ -8,6 +8,7 @@ COPY .mvn .mvn
 # Copia el código
 COPY src ./src
 
+RUN chmod +x ./mvnw
 # Construye el JAR
 RUN ./mvnw -DskipTests clean package
 
