@@ -43,6 +43,35 @@ This repository contains a full-stack app with a Java Spring Boot backend and a 
   - Dev server: `pnpm dev` (or `npm run dev`). Port defaults to Next.js dev port (usually 3000).
   - Build: `pnpm build` then `pnpm start` for production.
 
+  ## Production deployment notes (what to change and where to host)
+
+  - Environment variables: Move secrets out of `application.properties` into environment variables or a secrets manager. Set for backend:
+    - `SERPAPI_KEY` -> maps to `serpapi.key` or set `serpapi.key=${SERPAPI_KEY}` in properties
+    - `SPRING_DATASOURCE_URL` / `SPRING_DATASOURCE_USERNAME` / `SPRING_DATASOURCE_PASSWORD`
+    - `SERVER_PORT` or `server.port=${PORT:8080}` in `application.properties` so platforms can pick a dynamic port
+    - For frontend: `NEXT_PUBLIC_API_URL` must be set to the backend base URL in production (e.g. `https://api.example.com`).
+
+  - CORS & Security: Currently controllers use `@CrossOrigin("*")` and `SecurityConfig` permits all requests. Lock down CORS to your frontend domain and secure API paths in `SecurityConfig` for production (consider token-based auth like JWT).
+
+  - Database & schema: `spring.jpa.hibernate.ddl-auto=update` is okay for local dev but not recommended for production. Use `validate` or `none` and add Flyway/Liquibase migrations (`src/main/resources/db/migration`). Add `spring-boot-starter-actuator` for health checks.
+
+  - Logging & metrics: Turn off `spring.jpa.show-sql` and enable application logging/metrics. Expose `/actuator/health` and secure actuator endpoints.
+
+  - Build & start commands (prod):
+    - Backend: `mvn -DskipTests clean package`, then `java -jar target/compre-0.0.1-SNAPSHOT.jar` (or use Docker multi-stage build)
+    - Frontend: `pnpm build` and `pnpm start` (or deploy to Vercel which handles builds)
+
+  - Docker & local compose (optional): Provide a `Dockerfile` for the backend, a `Dockerfile` for the frontend, and a short `docker-compose.yml` to run `app + mysql` for production staging.
+
+  - Where to host:
+    - Frontend (best fit): Vercel — optimized for Next.js App Router; alternative: Netlify or Cloudflare Pages (static) or a Node container on Render for server-side rendering.
+    - Backend: Render, Railway, Fly.io, or an AWS/GCP managed platform (ECS Fargate, Cloud Run, Elastic Beanstalk) — choose a provider that supports Java 21 and `PORT` env behavior.
+    - MySQL: Use a managed DB: AWS RDS, Google Cloud SQL, Azure Database for MySQL, Render DB, or Railway DB. For smaller projects, choose Render/Railway to keep billing simple.
+
+  - Networking & TLS: Use HTTPS for frontend and backend; configure allowed callback/origin URLs. If using a custom domain, add it to the platform and update the `NEXT_PUBLIC_API_URL`.
+
+  - Secrets in repo: Remove any keys from `application.properties` and use a `.gitignore`-backed `.env` for local development; never commit secrets.
+
 Notes:
 - Backend defaults to `server.port=8080` (see `application.properties`). Create the MySQL database before starting (`create database compre;`).
 - The repository contains a SerpAPI key in `application.properties`; treat it as sensitive if moving code.
