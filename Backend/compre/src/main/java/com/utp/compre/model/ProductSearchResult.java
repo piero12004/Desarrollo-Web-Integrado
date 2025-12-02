@@ -9,5 +9,8 @@ public class ProductSearchResult {
     private String price;
     private String source;
     private String thumbnail;
-    private String productoApiId;
+    private String productApiId;
+    private String link;
+    private String snippet;
+    private String rating;
 }

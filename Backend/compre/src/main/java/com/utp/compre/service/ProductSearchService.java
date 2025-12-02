@@ -60,7 +60,11 @@ public class ProductSearchService {
                                 p.setPrice(item.path("price").asText(""));
                                 p.setThumbnail(item.path("thumbnail").asText(""));
                                 p.setSource(item.path("source").asText(""));
-                                p.setProductoApiId(item.path("position").asText(""));
+                                // position is used as productoApiId in current app
+                                p.setProductApiId(item.path("position").asText(""));
+                                p.setLink(item.path("link").asText(""));
+                                p.setSnippet(item.path("snippet").asText(""));
+                                p.setRating(item.path("rating").asText(""));
                                 results.add(p);
                             });
                         }
