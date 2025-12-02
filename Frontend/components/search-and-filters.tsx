@@ -11,7 +11,7 @@ const MOCK_PRODUCTS = [
     name: "iPhone 15 Pro Max",
     price: 1299,
     rating: 4.8,
-    image: "/placeholder.svg?height=200&width=200",
+    image: "/15pro.jpg?height=200&width=200",
     category: "Celulares",
     onSale: true,
     discount: 15,

@@ -15,7 +15,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
     originalPrice: 1499,
     rating: 4.8,
     reviews: 2450,
-    image: '/placeholder.svg?height=500&width=500',
+    image: '/15pro.jpg?height=500&width=500',
     category: 'Celulares',
     onSale: true,
     discount: 15,

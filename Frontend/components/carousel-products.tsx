@@ -10,7 +10,7 @@ const FEATURED_PRODUCTS = [
     name: "iPhone 15 Pro Max",
     price: 1299,
     rating: 4.8,
-    image: "/placeholder.svg?height=300&width=400",
+    image: "/15pro.jpg?height=300&width=400",
     store: "Apple Store",
   },
   {
@@ -18,7 +18,7 @@ const FEATURED_PRODUCTS = [
     name: "MacBook Pro M3",
     price: 1999,
     rating: 4.9,
-    image: "/placeholder.svg?height=300&width=400",
+    image: "/macbook.jpg?height=300&width=400",
     store: "Best Buy",
   },
   {
@@ -26,7 +26,7 @@ const FEATURED_PRODUCTS = [
     name: "Samsung Galaxy S24",
     price: 999,
     rating: 4.7,
-    image: "/placeholder.svg?height=300&width=400",
+    image: "/samsung.jpg?height=300&width=400",
     store: "Amazon",
   },
   {
@@ -34,7 +34,7 @@ const FEATURED_PRODUCTS = [
     name: "iPad Air",
     price: 599,
     rating: 4.6,
-    image: "/placeholder.svg?height=300&width=400",
+    image: "/air.jpg?height=300&width=400",
     store: "Apple Store",
   },
 ]
