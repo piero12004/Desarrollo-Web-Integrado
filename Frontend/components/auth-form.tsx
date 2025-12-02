@@ -1,15 +1,15 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { X } from "lucide-react"
+import { apiFetch } from "@/lib/api"
 
 interface AuthFormProps {
   onClose: () => void
-  onLoginSuccess: (user: { name: string; email: string; image: string }) => void
+  onLoginSuccess: (user: { name: string; email: string }) => void
 }
 
 export default function AuthForm({ onClose, onLoginSuccess }: AuthFormProps) {
@@ -20,33 +20,43 @@ export default function AuthForm({ onClose, onLoginSuccess }: AuthFormProps) {
     confirmPassword: "",
     name: "",
   })
+  const [msg, setMsg] = useState("")
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
+    setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setMsg("")
 
-    if (!formData.email || !formData.password) {
-      alert("Por favor completa todos los campos")
+    if (!formData.email || !formData.password || (mode === "signup" && !formData.name)) {
+      setMsg("Por favor completa todos los campos")
       return
     }
 
     if (mode === "signup" && formData.password !== formData.confirmPassword) {
-      alert("Las contraseñas no coinciden")
+      setMsg("Las contraseñas no coinciden")
       return
     }
 
-    const userName = mode === "signup" ? formData.name : "Usuario"
-    onLoginSuccess({
-      name: userName,
-      email: formData.email,
-      image: `/placeholder.svg?height=40&width=40&query=avatar`,
-    })
+    try {
+      const url = mode === "signup" ? "/api/usuario/registrar" : "/api/auth/login"
+      const body =
+        mode === "signup"
+          ? { nombre: formData.name, email: formData.email, password: formData.password }
+          : { email: formData.email, password: formData.password }
+
+      const res = await apiFetch(url, { method: "POST", body: JSON.stringify(body) })
+
+      // Para login puedes ajustar según lo que retorne tu backend
+      const userName = mode === "signup" ? formData.name : res?.nombre ?? "Usuario"
+      onLoginSuccess({ name: userName, email: res?.email ?? formData.email })
+      setMsg(`${mode === "login" ? "Login" : "Registrado"} exitoso`)
+    } catch (err: any) {
+      if (Array.isArray(err)) setMsg(err.join(", "))
+      else setMsg(typeof err === "string" ? err : JSON.stringify(err))
+    }
   }
 
   return (
@@ -69,7 +79,7 @@ export default function AuthForm({ onClose, onLoginSuccess }: AuthFormProps) {
                 placeholder="Tu nombre"
                 value={formData.name}
                 onChange={handleChange}
-                required={mode === "signup"}
+                required
               />
             </div>
           )}
@@ -115,6 +125,7 @@ export default function AuthForm({ onClose, onLoginSuccess }: AuthFormProps) {
           <Button type="submit" size="lg" className="w-full">
             {mode === "login" ? "Iniciar Sesión" : "Crear Cuenta"}
           </Button>
+          {msg && <p className="mt-2 text-sm text-red-600">{msg}</p>}
         </form>
 
         <div className="mt-3 pt-3 border-t border-border">
